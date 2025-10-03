@@ -15,15 +15,15 @@ export interface Product {
 }
 
 const dbPath = path.join(process.cwd(), "src", "data", "products.json");
-console.log("DB Path:", dbPath);
+// console.log("DB Path:", dbPath);
 
 const pruducts: Product[] = JSON.parse(fs.readFileSync(dbPath, "utf-8"));
-console.log("Loaded products:", pruducts);
+// console.log("Loaded products:", pruducts);
 
 let productMap = new Map<string, Product>(
   pruducts.map((p) => [p.id, { ...p }])
 );
-console.log("Product map initialized with", productMap);
+// console.log("Product map initialized with", productMap);
 
 export function getActiveProducts(): Product[] {
   return [...productMap.values()].filter((p) => p.status === "active");
