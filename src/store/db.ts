@@ -32,3 +32,26 @@ export function findProduct(id: string): Product | undefined {
   const p = productMap.get(id);
   return p ? { ...p } : undefined;
 }
+
+export function reserveInventory(items: { id: string; qty: number }[]) {
+  for (const item of items) {
+    const p = productMap.get(item.id);
+    if (!p)
+      throw Object.assign(new Error(`Product not found: ${item.id}`), {
+        statusCode: 404,
+      });
+    if (p.status !== "active")
+      throw Object.assign(new Error(`Inactive product: ${item.id}`), {
+        statusCode: 400,
+      });
+    if (p.inventory < item.qty)
+      throw Object.assign(new Error(`Not enough inventory for ${item.id}`), {
+        statusCode: 409,
+      });
+  }
+
+  for (const item of items) {
+    const p = productMap.get(item.id)!;
+    productMap.set(item.id, { ...p, inventory: p.inventory - item.qty });
+  }
+}
