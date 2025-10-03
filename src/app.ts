@@ -4,6 +4,7 @@ import cors from "cors";
 import catalogRouter from "./routes/catalog";
 import { basicLimiter } from "./middleware/rateLimiter";
 import { httpLogger, requestID } from "./middleware/logging";
+import authRouter from "./routes/auth";
 
 export const app = express();
 
@@ -19,3 +20,4 @@ app.get("/ping", (_req, res) => {
 });
 
 app.use("/catalog", catalogRouter);
+app.use("/auth", authRouter);
